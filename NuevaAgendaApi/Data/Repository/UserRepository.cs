@@ -44,5 +44,13 @@ namespace NuevaAgendaApi.Data.Repository
             FakeUsers.Add(user);
             return true;
         }
+
+        public User ValidateUser(string userName, string password)
+        {
+            var userActual = FakeUsers.Single(u=> u.UserName == userName);
+           if (userActual.Password == password)
+                return userActual;
+           return userActual;
+        }
     }
 }
