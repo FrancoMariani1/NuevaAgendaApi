@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NuevaAgendaApi.Data.Repository;
+using NuevaAgendaApi.Data.Repository.Implementations;
 using NuevaAgendaApi.Dto;
 using NuevaAgendaApi.Entities;
 using System.Text.Json;
@@ -77,6 +77,44 @@ namespace NuevaAgendaApi.Controllers
         {
             //public UserRepository us = new UserRepository();
             return Ok(_userRepository.GetAllUsers());
+        }
+
+        [HttpDelete]
+        [Route("{Id}")]
+        public IActionResult DeleteUser(int Id)
+        {
+            try
+            {
+                _userRepository.Delete(Id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Ok();
+        }
+
+        [HttpDelete]
+
+        public IActionResult Delete(int Id)
+        {
+            try
+            {
+                if (_userRepository.GetById(Id).Name == "Admin")
+                {
+                    _userRepository.Delete(Id);
+                }
+                else
+                {
+                    _userRepository.Archive(Id);
+                }
+                return StatusCode(204);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Ok();
         }
 
     }

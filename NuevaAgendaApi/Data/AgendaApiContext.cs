@@ -5,8 +5,8 @@ namespace NuevaAgendaApi.Data
 {
     public class AgendaApiContext : DbContext
     {
-        public DbSet<User> users { get; set; }
-        public DbSet<Contact> contacts { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
         public AgendaApiContext(DbContextOptions<AgendaApiContext> options) : base(options)
         {

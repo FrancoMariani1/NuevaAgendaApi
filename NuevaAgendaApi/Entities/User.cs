@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using NuevaAgendaApi.Models.Enum;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NuevaAgendaApi.Entities
@@ -14,5 +15,7 @@ namespace NuevaAgendaApi.Entities
         public string Password { get; set; }
         public string UserName { get; set; }
         public ICollection<Contact> Contacts { get; set; }
+        public State state { get; set; } = State.Active;
+        public Rol Rol { get; set; } = Rol.User;
     }
 }

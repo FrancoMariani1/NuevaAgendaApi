@@ -1,10 +1,12 @@
 ﻿using NuevaAgendaApi.Dto;
 using NuevaAgendaApi.Entities;
+using NuevaAgendaApi.Models.Enum;
 
-namespace NuevaAgendaApi.Data.Repository
+namespace NuevaAgendaApi.Data.Repository.Implementations
 {
     public class UserRepository
     {
+        private AgendaApiContext _context;
         public static List<User> FakeUsers = new List<User>()
         {
             new User()
@@ -29,6 +31,11 @@ namespace NuevaAgendaApi.Data.Repository
             return FakeUsers;
         }
 
+        public User? GetById(int userId)
+        {
+            return _context.Users.SingleOrDefault(u => u.Id == userId);
+        }
+
         public bool CreateUser(UserForCreationDTO userDTO)
         {
             User user = new User()
@@ -47,10 +54,26 @@ namespace NuevaAgendaApi.Data.Repository
 
         public User ValidateUser(string userName, string password)
         {
-            var userActual = FakeUsers.Single(u=> u.UserName == userName);
-           if (userActual.Password == password)
+            var userActual = FakeUsers.Single(u => u.UserName == userName);
+            if (userActual.Password == password)
                 return userActual;
-           return userActual;
+            return userActual;
+        }
+
+        public void Delete(int id)
+        {
+            _context.Users.Remove(_context.Users.Single(u => u.Id == id));
+        }
+
+        public void Archive(int Id)
+        {
+            User user = _context.Users.FirstOrDefault(u => u.Id == Id);
+            if (user != null)
+            {
+                user.state = State.Archived;
+                _context.Update(user);
+            }
+            
         }
     }
 }
