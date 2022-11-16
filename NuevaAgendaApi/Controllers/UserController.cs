@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuevaAgendaApi.Data.Repository.Implementations;
 using NuevaAgendaApi.Dto;
@@ -12,6 +13,7 @@ namespace NuevaAgendaApi.Controllers
     public class UserController : ControllerBase
     {
         private UserRepository _userRepository { get; set; }
+        private readonly IMapper _mapper;
         public UserController( UserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -55,28 +57,49 @@ namespace NuevaAgendaApi.Controllers
         //    return Ok(FakeUsers.Where(x =>x.Id == Id).ToList());
         //}
 
+        //[HttpGet]
+        //[Route("GetOne/{Id}")]
+        //public IActionResult GetOneById(int Id)
+        //{
+        //    List<User> usersToReturn = _userRepository.GetAllUsers();
+        //    usersToReturn.Where(x => x.Id == Id).ToList();
+        //    if (usersToReturn.Count > 0)
+        //        return Ok(usersToReturn);
+        //    return NotFound("Usuario inexistente");
+        //}
+
         [HttpGet]
-        [Route("GetOne/{Id}")]
+        [Route("{Id}")]
+
         public IActionResult GetOneById(int Id)
         {
-            List<User> usersToReturn = _userRepository.GetAllUsers();
-            usersToReturn.Where(x => x.Id == Id).ToList();
-            if (usersToReturn.Count > 0)
-                return Ok(usersToReturn);
-            return NotFound("Usuario inexistente");
+            var user = _userRepository.GetById(Id);
+
+        
+            var dto = _mapper.Map<GetUserByIdResponse>(user);
+            try
+            {
+                return Ok(dto);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);   
+            }
+            return Ok();
         }
+        
 
         [HttpPost]
-        public IActionResult CreateUser(UserForCreationDTO userDTO)
+        public IActionResult CreateUser(CreateAndUpdateUserDTO userDTO)
         {
-            _userRepository.CreateUser(userDTO);
+            _userRepository.Create(userDTO);
             return NoContent();
         }
         [HttpGet]
         public IActionResult GetAll()
         {
             //public UserRepository us = new UserRepository();
-            return Ok(_userRepository.GetAllUsers());
+            return Ok(_userRepository.GetAll());
         }
 
         [HttpDelete]

@@ -23,6 +23,7 @@ namespace NuevaAgendaApi.Data
                 Password = "Pa$$w0rd",
                 Email = "karenbailapiola@gmail.com",
                 UserName = "karenpiola"
+              
             };
             User luis = new User()
             {

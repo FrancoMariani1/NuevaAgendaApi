@@ -5,13 +5,13 @@ namespace NuevaAgendaApi.Data.Interfaces
 {
     public interface IUserRepository
     {
-        public User? ValidateUser(AuthenticationRequestBody authRequestBody);
-        public User? GetById(int UserId);
-        public List<User> GetAll();
-        public void Create(CreateAndUpdateUserDTO dto);
-        public void Update(CreateAndUpdateUserDTO dto);
-        public void Delete(int Id);
-        public void Archive(int Id);
+        User? ValidateUser(AuthenticationRequestBody authRequestBody);
+        User? GetById(int UserId);
+        List<User> GetAll();
+        void Create(CreateAndUpdateUserDTO dto);
+        void Update(CreateAndUpdateUserDTO dto);
+        void Delete(int Id);
+        void Archive(int Id);
 
     }
 }

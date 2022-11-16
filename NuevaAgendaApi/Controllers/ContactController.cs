@@ -84,29 +84,44 @@ namespace NuevaAgendaApi.Controllers
         //    return Ok();
         //}
 
+        //[HttpDelete]
+        //public IActionResult DeleteContactById(int Id)
+        //{
+        //    try
+        //    {
+        //        _contactRepository.Delete(Id);
+                
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        return BadRequest(ex);
+        //    }
+        //    return Ok();
+        //}
+
         [HttpDelete]
-        public IActionResult DeleteContactById(int Id)
+        public IActionResult Delete(int Id)
         {
             try
             {
-                _contactRepository.Delete(Id);
+                string role = HttpContext.User.FindFirst("role").Value;
+                if (role == "Admin")
+                {
+                    _userRepository.Delete(Id);
+                
+                }
+                else
+                {
+                    _userRepository.Archive(Id);
+                }
+                return NoContent();
                 
             }
             catch(Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
-            return Ok();
         }
-
-        //[HttpDelete]
-        //public IActionResult Delete(int Id)
-        //{
-        //    try
-        //    {
-        //        if (User.Identity.Name == "Admin")
-        //    }
-        //}
 
     }
 }

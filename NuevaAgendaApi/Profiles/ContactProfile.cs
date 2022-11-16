@@ -1,6 +1,8 @@
-﻿namespace NuevaAgendaApi.Profiles
+﻿using AutoMapper;
+
+namespace NuevaAgendaApi.Profiles
 {
-    public class ContactProfile
+    public class ContactProfile : Profile
     {
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using NuevaAgendaApi.Models.Enum;
+using System.ComponentModel.DataAnnotations;
 
 namespace NuevaAgendaApi.Dto
 {
@@ -11,5 +12,7 @@ namespace NuevaAgendaApi.Dto
         public string Password { get; set; }
         [Required]
         public string Email { get; set; }
+
+        public Rol Rol { get; set; } = Rol.User;
     }
 }

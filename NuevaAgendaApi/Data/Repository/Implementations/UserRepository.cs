@@ -1,11 +1,14 @@
-﻿using NuevaAgendaApi.Dto;
+﻿using AutoMapper;
+using NuevaAgendaApi.Data.Interfaces;
+using NuevaAgendaApi.Dto;
 using NuevaAgendaApi.Entities;
 using NuevaAgendaApi.Models.Enum;
 
 namespace NuevaAgendaApi.Data.Repository.Implementations
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
+        private readonly IMapper _mapper;
         private AgendaApiContext _context;
         public static List<User> FakeUsers = new List<User>()
         {
@@ -26,43 +29,65 @@ namespace NuevaAgendaApi.Data.Repository.Implementations
             }
         };
 
-        public List<User> GetAllUsers()
-        {
-            return FakeUsers;
-        }
+        //public List<User> GetAll()
+        //{
+        //    return FakeUsers;
+        //}
 
+        public List<User> GetAll()
+        {
+            return _context.Users.ToList();
+        }
         public User? GetById(int userId)
         {
             return _context.Users.SingleOrDefault(u => u.Id == userId);
         }
 
-        public bool CreateUser(UserForCreationDTO userDTO)
+        public void Create(CreateAndUpdateUserDTO dto)
         {
-            User user = new User()
-            {
-                Name = userDTO.Name,
-                LastName = userDTO.LastName,
-                Email = userDTO.Email,
-                Password = userDTO.Password,
-                UserName = userDTO.UserName,
-                Id = userDTO.Id,
-            };
-
-            FakeUsers.Add(user);
-            return true;
+            _context.Users.Add(_mapper.Map<User>(dto));
         }
+        //public bool Create(CreateAndUpdateUserDTO userDTO)
+        //{
+        //    User user = new User()
+        //    {
+        //        Name = userDTO.Name,
+        //        LastName = userDTO.LastName,
+        //        Email = userDTO.Email,
+        //        Password = userDTO.Password,
+        //        UserName = userDTO.UserName,
+        //        //Id = userDTO.Id,
+        //    };
 
-        public User ValidateUser(string userName, string password)
+        //    FakeUsers.Add(user);
+        //    return true;
+        //}
+
+        //public User ValidateUser(string userName, string password)
+        //{
+        //    var userActual = FakeUsers.Single(u => u.UserName == userName);
+        //    if (userActual.Password == password)
+        //        return userActual;
+        //    return userActual;
+        //}
+
+        public User? ValidateUser(AuthenticationRequestBody authRequestBody)
         {
-            var userActual = FakeUsers.Single(u => u.UserName == userName);
-            if (userActual.Password == password)
-                return userActual;
-            return userActual;
+            return _context.Users.FirstOrDefault(p => p.UserName == authRequestBody.UserName && p.Password == authRequestBody.Password);
         }
+        //public void Delete(int id)
+        //{
+        //    _context.Users.Remove(_context.Users.Single(u => u.Id == id));
+        //}
 
         public void Delete(int id)
         {
             _context.Users.Remove(_context.Users.Single(u => u.Id == id));
+        }
+
+        public void Update(CreateAndUpdateUserDTO dto)
+        {
+            _context.Users.Update(_mapper.Map<User>(dto));
         }
 
         public void Archive(int Id)

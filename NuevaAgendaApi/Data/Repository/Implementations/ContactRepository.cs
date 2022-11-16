@@ -7,6 +7,11 @@ namespace NuevaAgendaApi.Data.Repository.Implementations
     public class ContactRepository : IContactRepository
     {
         private readonly AgendaApiContext _context;
+        
+        public ContactRepository(AgendaApiContext context)
+        {
+            _context = context;
+        }
         //public static List<Contact> FakeContacts = new List<Contact>()
         //{
         //    new Contact()
