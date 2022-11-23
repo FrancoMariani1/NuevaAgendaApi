@@ -8,6 +8,8 @@ namespace NuevaAgendaApi.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Contact> Contacts { get; set; }
 
+        public DbSet<Location> Locations { get; set; }
+
         public AgendaApiContext(DbContextOptions<AgendaApiContext> options) : base(options)
         {
 
@@ -43,6 +45,7 @@ namespace NuevaAgendaApi.Data
                 Description = "Plomero",
                 TelephoneNumber = null,
                 UserId = karen.Id,
+                
             };
 
             Contact pepeC = new Contact()
@@ -63,6 +66,30 @@ namespace NuevaAgendaApi.Data
                 Description = "Jefa",
                 TelephoneNumber = null,
                 UserId = karen.Id,
+            };
+
+            Location jaimitoL = new Location()
+            {
+                Id = 1,
+                Latitude = -32.92415,
+                Longitude = -60.73500,
+                Description = "Casa de Jaimito"
+            };
+
+            Location pepeL = new Location()
+            {
+                Id = 2,
+                Latitude = -32.93008,
+                Longitude = -60.72814,
+                Description = "Casa de Pepe",
+            };
+
+            Location mariaL = new Location()
+            {
+                Id = 3,
+                Latitude = -32.92919,
+                Longitude = -60.73229,
+                Description = "Casa de Maria"
             };
 
             modelBuilder.Entity<Contact>().HasData(jaimitoC, pepeC, mariaC);

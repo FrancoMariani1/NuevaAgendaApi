@@ -1,4 +1,5 @@
-﻿using NuevaAgendaApi.Data.Interfaces;
+﻿using AutoMapper;
+using NuevaAgendaApi.Data.Interfaces;
 using NuevaAgendaApi.Dto;
 using NuevaAgendaApi.Entities;
 
@@ -6,8 +7,10 @@ namespace NuevaAgendaApi.Data.Repository.Implementations
 {
     public class ContactRepository : IContactRepository
     {
-        private readonly AgendaApiContext _context;
-        
+        private AgendaApiContext _context;
+        private readonly IMapper _mapper;
+
+
         public ContactRepository(AgendaApiContext context)
         {
             _context = context;

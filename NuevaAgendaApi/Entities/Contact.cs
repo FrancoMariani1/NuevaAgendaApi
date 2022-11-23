@@ -15,5 +15,9 @@ namespace NuevaAgendaApi.Entities
         [ForeignKey("UserId")]
         public User User { get; set; }
         public int UserId { get; set; }
+        public Location Location { get; set; }
+        public int LocationId { get; set; }
+
+        
     }
 }
