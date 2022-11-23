@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NuevaAgendaApi.Data;
 
@@ -11,9 +12,10 @@ using NuevaAgendaApi.Data;
 namespace NuevaAgendaApi.Migrations
 {
     [DbContext(typeof(AgendaApiContext))]
-    partial class AgendaApiContextModelSnapshot : ModelSnapshot
+    [Migration("20221123011113_Location")]
+    partial class Location
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
