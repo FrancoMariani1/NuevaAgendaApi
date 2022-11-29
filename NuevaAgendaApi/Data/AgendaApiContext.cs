@@ -5,12 +5,12 @@ namespace NuevaAgendaApi.Data
 {
     public class AgendaApiContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<User>? Users { get; set; }
+        public DbSet<Contact>? Contacts { get; set; }
 
-        public DbSet<Location> Locations { get; set; }
+        public DbSet<Location>? Locations { get; set; }
 
-        public AgendaApiContext(DbContextOptions<AgendaApiContext> options) : base(options)
+        public AgendaApiContext(DbContextOptions<AgendaApiContext> options) : base(options)//Acá estamos llamando al constructor de DbContext que es el que acepta las opciones
         {
 
         }
@@ -24,8 +24,9 @@ namespace NuevaAgendaApi.Data
                 LastName = "Lasot",
                 Password = "Pa$$w0rd",
                 Email = "karenbailapiola@gmail.com",
-                UserName = "karenpiola"
-              
+                UserName = "karenpiola",
+                Rol = Models.Enum.Rol.Admin,
+
             };
             User luis = new User()
             {
@@ -45,7 +46,8 @@ namespace NuevaAgendaApi.Data
                 Description = "Plomero",
                 TelephoneNumber = null,
                 UserId = karen.Id,
-                
+               
+              
             };
 
             Contact pepeC = new Contact()

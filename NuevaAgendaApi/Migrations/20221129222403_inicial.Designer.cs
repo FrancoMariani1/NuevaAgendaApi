@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NuevaAgendaApi.Data;
 
@@ -10,9 +11,10 @@ using NuevaAgendaApi.Data;
 namespace NuevaAgendaApi.Migrations
 {
     [DbContext(typeof(AgendaApiContext))]
-    partial class AgendaApiContextModelSnapshot : ModelSnapshot
+    [Migration("20221129222403_inicial")]
+    partial class inicial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -129,12 +131,12 @@ namespace NuevaAgendaApi.Migrations
                     b.Property<int>("Rol")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("State")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("state")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -148,9 +150,9 @@ namespace NuevaAgendaApi.Migrations
                             LastName = "Lasot",
                             Name = "Karen",
                             Password = "Pa$$w0rd",
-                            Rol = 0,
-                            State = 0,
-                            UserName = "karenpiola"
+                            Rol = 1,
+                            UserName = "karenpiola",
+                            state = 0
                         },
                         new
                         {
@@ -160,8 +162,8 @@ namespace NuevaAgendaApi.Migrations
                             Name = "Luis Gonzalez",
                             Password = "lamismadesiempre",
                             Rol = 1,
-                            State = 0,
-                            UserName = "luismitoto"
+                            UserName = "luismitoto",
+                            state = 0
                         });
                 });
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuevaAgendaApi.Data.Interfaces;
 using NuevaAgendaApi.Data.Repository.Implementations;
@@ -9,6 +10,7 @@ namespace NuevaAgendaApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ContactController : ControllerBase
     {
         //public List<Contact> contacts = new List<Contact>()
@@ -49,26 +51,48 @@ namespace NuevaAgendaApi.Controllers
         
         public IActionResult GetAll()
         {
-            return Ok(_contactRepository.GetAll());
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+            return Ok(_contactRepository.GetAll(userId));
         }
 
         [HttpGet]
-        [Route("GetOne/{Id}")]
+        [Route("{Id}")]
+
         public IActionResult GetOneById(int Id)
         {
-            List<Contact> contactsToReturn = _contactRepository.GetAll();
-            contactsToReturn.Where(x => x.Id == Id).ToList();
-            if (contactsToReturn.Count > 0)
-                return Ok(contactsToReturn);
-            return NotFound("Contacto inexistente");
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+            return Ok(_contactRepository.GetAll(userId).Where(x => x.Id == Id));
         }
+        //[HttpGet]
+        //[Route("GetOne/{Id}")]
+        //public IActionResult GetOneById(int Id)
+        //{
+        //    List<Contact> contactsToReturn = _contactRepository.GetAllByUser();
+        //    contactsToReturn.Where(x => x.Id == Id).ToList();
+        //    if (contactsToReturn.Count > 0)
+        //        return Ok(contactsToReturn);
+        //    return NotFound("Contacto inexistente");
+        //}
 
         [HttpPost]
         public IActionResult CreateContact(CreateAndUpdateContactDTO contactDTO)
         {
-            _contactRepository.Create(contactDTO);
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value);
+            _contactRepository.Create(contactDTO, userId);
+            return Created("Created", contactDTO);
+        }
+
+        [HttpPut]
+
+        public IActionResult UpdateContact(CreateAndUpdateContactDTO contactDTO)
+        {
+            _contactRepository.Update(contactDTO);
             return NoContent();
         }
+
+       
+
+
 
         //[HttpDelete]
         //public IActionResult DeleteContactById(int id)

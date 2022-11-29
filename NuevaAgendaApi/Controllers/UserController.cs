@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NuevaAgendaApi.Data.Interfaces;
 using NuevaAgendaApi.Data.Repository.Implementations;
 using NuevaAgendaApi.Dto;
 using NuevaAgendaApi.Entities;
@@ -10,37 +12,38 @@ namespace NuevaAgendaApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
-        private UserRepository _userRepository { get; set; }
+        private IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        public UserController( UserRepository userRepository)
+        public UserController( IUserRepository userRepository)
         {
             _userRepository = userRepository;
 
         }
 
-       
 
 
-        public static List<User> FakeUsers = new List<User>()
-        {
-            new User()
-            {
-                Email = "asdas@hotmail.com",
-                Name = "Pepe",
-                Password = "passwordsegura",
-                Id = 1,
-            },
 
-            new User()
-            {
-                Email = "lkjb@hotmail.com",
-                Name = "Andres",
-                Password = "passwordsegura1",
-                Id = 2,
-            }
-        };
+        //public static List<User> FakeUsers = new List<User>()
+        //{
+        //    new User()
+        //    {
+        //        Email = "asdas@hotmail.com",
+        //        Name = "Pepe",
+        //        Password = "passwordsegura",
+        //        Id = 1,
+        //    },
+
+        //    new User()
+        //    {
+        //        Email = "lkjb@hotmail.com",
+        //        Name = "Andres",
+        //        Password = "passwordsegura1",
+        //        Id = 2,
+        //    }
+        //};
 
         //public List<User> users = new List<User>()
         //{
@@ -53,7 +56,7 @@ namespace NuevaAgendaApi.Controllers
 
         //public ActionResult GetOneById(int Id)
         //{
-            
+
         //    return Ok(FakeUsers.Where(x =>x.Id == Id).ToList());
         //}
 
@@ -67,6 +70,15 @@ namespace NuevaAgendaApi.Controllers
         //        return Ok(usersToReturn);
         //    return NotFound("Usuario inexistente");
         //}
+
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            //public UserRepository us = new UserRepository();
+            return Ok(_userRepository.GetAll());
+        }
+
 
         [HttpGet]
         [Route("{Id}")]
@@ -85,22 +97,40 @@ namespace NuevaAgendaApi.Controllers
             {
                 return BadRequest(ex.Message);   
             }
-            return Ok();
+            //return Ok();
         }
         
 
         [HttpPost]
         public IActionResult CreateUser(CreateAndUpdateUserDTO userDTO)
         {
-            _userRepository.Create(userDTO);
+            try
+            {
+                _userRepository.Create(userDTO);
+                
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Created("Created", userDTO);
+        }
+
+        [HttpPut]
+
+        public IActionResult UpdateUser(CreateAndUpdateUserDTO userDTO)
+        {
+            try
+            {
+                _userRepository.Update(userDTO);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
             return NoContent();
         }
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            //public UserRepository us = new UserRepository();
-            return Ok(_userRepository.GetAll());
-        }
+       
 
         [HttpDelete]
         [Route("{Id}")]
@@ -137,7 +167,7 @@ namespace NuevaAgendaApi.Controllers
             {
                 return BadRequest(ex);
             }
-            return Ok();
+            //return Ok();
         }
 
     }

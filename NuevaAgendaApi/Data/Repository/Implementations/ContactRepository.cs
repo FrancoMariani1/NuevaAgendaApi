@@ -11,9 +11,10 @@ namespace NuevaAgendaApi.Data.Repository.Implementations
         private readonly IMapper _mapper;
 
 
-        public ContactRepository(AgendaApiContext context)
+        public ContactRepository(AgendaApiContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         //public static List<Contact> FakeContacts = new List<Contact>()
         //{
@@ -33,14 +34,17 @@ namespace NuevaAgendaApi.Data.Repository.Implementations
         //    }
         //};
 
-        public List<Contact> GetAll()
+        public List<Contact> GetAll(int id)
         {
-            return _context.Contacts.ToList();
+            return _context.Contacts.Where(c => c.UserId == id).ToList();
         }
 
-        public void Create(CreateAndUpdateContactDTO dto)
+        public void Create(CreateAndUpdateContactDTO dto, int id)
         {
-
+            Contact contact = _mapper.Map<Contact>(dto);
+            contact.UserId = id;
+            _context.Contacts.Add(contact);
+            _context.SaveChanges();
         }
         //public bool CreateContact(ContactForCreationDTO contactDTO)
         //{
@@ -60,11 +64,13 @@ namespace NuevaAgendaApi.Data.Repository.Implementations
         //}
         public void Update(CreateAndUpdateContactDTO dto)
         {
-
+            _context.Contacts.Update(_mapper.Map<Contact>(dto));
+            _context.SaveChanges();
         }
         public void Delete(int id)
         {
             _context.Contacts.Remove(_context.Contacts.Single(c => c.Id == id));
+            _context.SaveChanges();
         }
     }
 }

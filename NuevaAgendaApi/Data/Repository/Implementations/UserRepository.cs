@@ -10,24 +10,32 @@ namespace NuevaAgendaApi.Data.Repository.Implementations
     {
         private readonly IMapper _mapper;
         private AgendaApiContext _context;
-        public static List<User> FakeUsers = new List<User>()
-        {
-            new User()
-            {
-                Email = "asdas@hotmail.com",
-                Name = "Pepe",
-                Password = "passwordsegura",
-                Id = 1,
-            },
 
-            new User()
-            {
-                Email = "lkjb@hotmail.com",
-                Name = "Andres",
-                Password = "passwordsegura1",
-                Id = 2,
-            }
-        };
+        public UserRepository(IMapper mapper, AgendaApiContext context)
+        {
+            _mapper = mapper;
+            _context = context;
+        }
+
+
+        //public static List<User> FakeUsers = new List<User>()
+        //{
+        //    new User()
+        //    {
+        //        Email = "asdas@hotmail.com",
+        //        Name = "Pepe",
+        //        Password = "passwordsegura",
+        //        Id = 1,
+        //    },
+
+        //    new User()
+        //    {
+        //        Email = "lkjb@hotmail.com",
+        //        Name = "Andres",
+        //        Password = "passwordsegura1",
+        //        Id = 2,
+        //    }
+        //};
 
         //public List<User> GetAll()
         //{
@@ -95,7 +103,7 @@ namespace NuevaAgendaApi.Data.Repository.Implementations
             User user = _context.Users.FirstOrDefault(u => u.Id == Id);
             if (user != null)
             {
-                user.state = State.Archived;
+                user.State = State.Archived;
                 _context.Update(user);
             }
             

@@ -12,10 +12,12 @@ namespace NuevaAgendaApi.Entities
         public string Name { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        [Required]
         public string Password { get; set; }
+        [Required]
         public string UserName { get; set; }
         public ICollection<Contact> Contacts { get; set; }
-        public State state { get; set; } = State.Active;
+        public State State { get; set; } = State.Active;
         public Rol Rol { get; set; } = Rol.User;
     }
 }

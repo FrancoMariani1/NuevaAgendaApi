@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using NuevaAgendaApi.Data.Interfaces;
 using NuevaAgendaApi.Data.Repository.Implementations;
 using NuevaAgendaApi.Dto;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,22 +10,22 @@ using System.Text;
 
 namespace NuevaAgendaApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/authentication")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IConfiguration _config;
 
         
-        public AuthenticationController(UserRepository userRepository, IConfiguration config)
+        public AuthenticationController(IUserRepository userRepository, IConfiguration config)
         {
-            _userRepository = userRepository;
-            _config = config;
+            this._userRepository = userRepository;
+            _config = config; //inyección de dependencia para appsettings.json
         }
 
         [HttpPost("authenticate")] //Vamos a usar un POST ya que debemos enviar los datos para hacer el login
-        public ActionResult<string> Autenticar(AuthenticationRequestBody authenticationRequestBody) //Enviamos como parámetro la clase que creamos arriba
+        public IActionResult Autenticar(AuthenticationRequestBody authenticationRequestBody) //Enviamos como parámetro la clase que creamos arriba
         {
             //Paso 1: Validamos las credenciales
             var user = _userRepository.ValidateUser(authenticationRequestBody); //Lo primero que hacemos es llamar a una función que valide los parámetros que enviamos.
